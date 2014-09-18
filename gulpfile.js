@@ -55,7 +55,6 @@ function buildMochaOpts(opts) {
     flags: {
       u: 'bdd-with-opts',
       R: 'spec',
-      b: true,
       //R: 'nyan',      
     },
     bin: path.join(__dirname,  'node_modules/.bin/mocha'),
@@ -182,7 +181,8 @@ var server;
 gulp.task('start-proxy', function(done) {
   var proxy = httpProxy.createProxyServer({});
   var proxyQueue;
-  if(args.throttle) {
+  var throttle = args.throttle || process.env.THROTTLE;
+  if(throttle) {
     proxyQueue = async.queue(function(task, done) {
 
       proxy.web(task.req, task.res, { target: 'http://127.0.0.1:' + task.port });
@@ -205,7 +205,7 @@ gulp.task('start-proxy', function(done) {
       var port = parseInt(m[1]);
       url.pathname = url.pathname.replace(re, '/');
       req.url = url.format();
-      if(args.throttle) {
+      if(throttle) {
         proxyQueue.push({req: req, res: res, port: port});
       } else {
         proxy.web(req, res, { target: 'http://127.0.0.1:' + port });
