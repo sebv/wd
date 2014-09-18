@@ -250,7 +250,7 @@ gulp.task('start-sc', function(done) {
   var opts = {
     username: process.env.SAUCE_USERNAME,
     accessKey: process.env.SAUCE_ACCESS_KEY,    
-    //verbose: process.env.SAUCE_CONNECT_VERBOSE,
+    verbose: process.env.SAUCE_CONNECT_VERBOSE,
     directDomains: 'cdnjs.cloudflare.com,html5shiv.googlecode.com',
     logger: function(mess) {console.log(mess);}
   };
@@ -277,7 +277,7 @@ gulp.task('stop-sc', function(done) {
 gulp.task('pre-midway', function() {
   var seq = ['start-proxy'];
   if(args.sauce && !args['nosc']) {
-    // seq.unshift('start-sc');
+    seq.unshift('start-sc');
   }
   return runSequence(seq);
 });
