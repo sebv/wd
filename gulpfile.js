@@ -277,7 +277,7 @@ gulp.task('stop-sc', function(done) {
 gulp.task('pre-midway', function() {
   var seq = ['start-proxy'];
   if(args.sauce && !args['nosc']) {
-    seq.unshift('start-sc');
+    // seq.unshift('start-sc');
   }
   return runSequence(seq);
 });

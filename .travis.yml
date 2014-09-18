@@ -6,6 +6,8 @@ branches:
 language: node_js
 node_js:
   - "0.10"
+addons:
+  sauce_connect: true
 env:
   global:
     - secure: "hoUytaNRZdRs4Jfcr5S/JgjRWPnYkLlN2LY/83KhY2dMcntOgEfqr/6eSxs7fWXRNcM5LrcTJZmi489B7iZxwoYeINd55ZjmxZY8JGbtwxCwcefhRrPNmRgnApyft5J5Ca1RKDJ/9Iz6hy76CcYOOqPTgaUNE+dgiNlbPbxmVIg="  
