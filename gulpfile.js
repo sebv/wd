@@ -257,11 +257,18 @@ gulp.task('start-sc', function(done) {
   if(process.env.TRAVIS_JOB_NUMBER) {
     opts.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
   }
-  var startTunnel = function(done) {
+  var startTunnel = function(done, n) {
     sauceConnectLauncher(opts, function (err, _sauceConnectProcess) {
       if (err) {
-        console.error(err.message);
-        done(err);
+        if(n > 0) {
+          console.log('retrying sauce connect in 20 secs.');
+          setTimeout(function() {
+            startTunnel(done, n-1);
+          }, 20000);          
+        } else {
+          console.error(err.message);
+          done(err);          
+        }
         return;
       }
       sauceConnectProcess = _sauceConnectProcess;
@@ -270,14 +277,7 @@ gulp.task('start-sc', function(done) {
     });
   };
 
-  startTunnel(function(err) {
-    if(err) {
-      console.log('retrying sauce connect in 20 secs.');
-      setTimeout(function() {
-        startTunnel(done);
-      }, 20000);
-    } else { done(); }
-  });
+  startTunnel(done, 3);
 });
 
 gulp.task('stop-sc', function(done) {
