@@ -257,15 +257,26 @@ gulp.task('start-sc', function(done) {
   if(process.env.TRAVIS_JOB_NUMBER) {
     opts.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
   }
-  sauceConnectLauncher(opts, function (err, _sauceConnectProcess) {
-    if (err) {
-      console.error(err.message);
-      done(err);
-      return;
-    }
-    sauceConnectProcess = _sauceConnectProcess;
-    console.log("Sauce Connect ready");
-    done();
+  var startTunnel = function(done) {
+    sauceConnectLauncher(opts, function (err, _sauceConnectProcess) {
+      if (err) {
+        console.error(err.message);
+        done(err);
+        return;
+      }
+      sauceConnectProcess = _sauceConnectProcess;
+      console.log("Sauce Connect ready");
+      done();
+    });
+  };
+
+  startTunnel(function(err) {
+    if(err) {
+      console.log('retrying sauce connect in 20 secs.');
+      setTimeout(function() {
+        startTunnel(done);
+      }, 20000);
+    } else { done(); }
   });
 });
 
