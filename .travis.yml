@@ -29,13 +29,13 @@ env:
     - CONFIG=explorer    
     # - CONFIG=iphone
     # - CONFIG=ipad
-# matrix:
-#   include:
-#     - node_js: "0.11"
-#       env: CONFIG=chrome_e2e
-#   allow_failures:
-#     - node_js: "0.11"
-#       env: CONFIG=chrome_e2e
+matrix:
+  include:
+    - node_js: "0.11"
+      env: CONFIG=chrome_e2e
+  allow_failures:
+    - node_js: "0.11"
+      env: CONFIG=chrome_e2e
 before_script:
   - npm install -g gulp mocha bdd-with-opts
 script:
